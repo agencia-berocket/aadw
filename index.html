@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>American Airlines - Airline tickets and low fares at aa.com</title>
+<style>
+  :root{
+    --aa-blue:#0078d2;
+    --aa-blue-dark:#00467f;
+    --aa-navy:#003049;
+    --text-dark:#333333;
+    --text-gray:#5a5a5a;
+    --border-gray:#d6d6d6;
+    --bg-footer:#d1dae1;
+  }
+  *{box-sizing:border-box;}
+  html{font-size:16px;}
+  body{
+    margin:0;
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+    color:var(--text-dark);
+    -webkit-font-smoothing:antialiased;
+    font-size:15px;
+    line-height:1.4;
+  }
+  a{color:var(--aa-blue); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  img{max-width:100%; display:block;}
+  .page{max-width:1100px; margin:0 auto; background:#fff;}
+  .wrap{margin:0 auto; padding:0 20px;}
+
+  /* external-link icon (open in new window) */
+  .ext-ico{
+    display:inline-block; width:.82em; height:.82em; margin-left:.28em;
+    vertical-align:-.04em;
+    background-repeat:no-repeat; background-position:center; background-size:contain;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23136caf' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4'/%3E%3Cpath d='M14 4h6v6'/%3E%3Cpath d='M20 4 11 13'/%3E%3C/svg%3E");
+  }
+
+  /* ===== Header ===== */
+  .topbar{
+    display:flex; align-items:center; justify-content:flex-end;
+    padding:10px 20px; gap:16px; font-size:13px; border-bottom:1px solid #eee;
+  }
+  .lang-select{display:flex; align-items:center; gap:8px; color:#15191f; cursor:pointer; font-size:15px;}
+  .flag{
+    width:26px; height:18px; background-image:url('assets/flags-sprite.png');
+    background-position:-129.5px 0; background-size:207px 255px; background-repeat:no-repeat;
+    border-radius:2px; box-shadow:0 0 0 1px rgba(0,0,0,.08);
+  }
+  .search-box{
+    display:flex; align-items:center; border:1px solid #b8b8b8; border-radius:3px; overflow:hidden;
+  }
+  .search-box input{
+    border:none; outline:none; padding:7px 10px; font-size:13px; width:180px; font-family:inherit;
+  }
+  .search-box button{
+    border:none; background:#fff; padding:7px 10px; cursor:pointer; color:var(--aa-blue);
+  }
+
+  .mainheader{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 20px; border-bottom:1px solid #e2e2e2; flex-wrap:wrap; gap:12px;
+  }
+  .logo-area{display:flex; align-items:center; gap:12px;}
+  .logo-area img.logo-100{height:48px; width:auto; display:block;}
+  .logo-area img.logo-oneworld{height:30px; width:30px; display:block;}
+  nav.mainnav{display:flex; gap:40px; font-weight:700; font-size:16px;}
+  nav.mainnav a{color:#15191f;}
+  .header-actions{display:flex; align-items:center; gap:10px;}
+  .btn{
+    padding:9px 22px; border-radius:3px; font-weight:700; font-size:15px; cursor:pointer; border:1px solid transparent; font-family:inherit;
+  }
+  .btn-primary{background:var(--aa-blue); color:#fff;}
+  .btn-outline{background:#fff; color:var(--aa-blue); border-color:var(--aa-blue);}
+
+  /* ===== Hero ===== */
+  .hero{
+    position:relative; height:594px; width:100%; margin:0 auto; overflow:hidden; background:#222;
+  }
+  .hero-slide{
+    position:absolute; inset:0; opacity:0; transition:opacity .6s ease;
+    background-size:cover; background-position:top center;
+  }
+  .hero-slide.active{opacity:1;}
+  .hero-nav-arrow{
+    position:absolute; top:50%; transform:translateY(-50%);
+    width:38px; height:38px; border-radius:50%; background:rgba(0,0,0,.35); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-size:20px; cursor:pointer;
+  }
+  .hero-nav-arrow.left{left:16px;}
+  .hero-nav-arrow.right{right:16px;}
+  .hero-pause{
+    position:absolute; left:20px; bottom:150px; width:28px; height:28px; background:rgba(0,0,0,.5); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-size:12px; border-radius:2px; cursor:pointer;
+  }
+
+  /* ===== Booking widget ===== */
+  .booking-card{
+    max-width:977px; margin:-210px auto 0; background:#fff; border-radius:0; position:relative; z-index:5;
+    box-shadow:0 6px 8px -4px rgba(0,0,0,.25);
+  }
+  .booking-tabs{display:flex; border-bottom:1px solid #e2e2e2;}
+  .booking-tabs div{
+    flex:1; text-align:center; padding:16px 0; font-weight:400; font-size:18px; color:#136caf; cursor:pointer; background:#f0f3f5;
+  }
+  .booking-tabs div.active{color:#0a406b; font-weight:400; background:#fff; border-bottom:3px solid var(--aa-blue); margin-bottom:-1px;}
+  .booking-body{padding:20px 26px 22px;}
+  .booking-row1{display:flex; align-items:center; gap:24px; margin-bottom:16px; flex-wrap:wrap;}
+  .pill{
+    padding:7px 16px; border-radius:18px; font-size:14px; font-weight:700; cursor:pointer;
+  }
+  .pill.active{background:var(--aa-blue); color:#fff;}
+  .pill.inactive{background:#eef2f5; color:var(--text-dark);}
+  .link-item{color:#136caf; font-weight:700; font-size:15px;}
+  .radio-item{display:flex; align-items:center; gap:6px; font-size:15px;}
+  .radio-item input{accent-color:var(--aa-blue);}
+  .booking-grid{
+    display:grid; grid-template-columns:1fr 1fr 200px; gap:18px; margin-bottom:6px;
+  }
+  .field label{display:block; font-size:14px; font-weight:700; margin-bottom:6px; color:#15191f;}
+  .field .input-wrap{
+    position:relative; border:1px solid #767676; border-radius:3px;
+  }
+  .field input, .field select{
+    width:100%; border:none; outline:none; padding:11px 34px 11px 12px; font-size:16px; border-radius:3px; background:transparent; appearance:none; font-family:inherit;
+  }
+  .field input::placeholder{color:#6b6b6b;}
+  .field .icon{position:absolute; right:10px; top:50%; transform:translateY(-50%); color:#136caf; font-size:15px; pointer-events:none;}
+  .booking-links{display:flex; justify-content:space-between; align-items:flex-start; margin-top:16px;}
+  .booking-links a{color:#136caf;}
+  .booking-links .left a{display:block; font-size:15px; margin-bottom:5px;}
+  .booking-links .right a{font-size:15px;}
+  .search-btn{
+    background:var(--aa-blue); color:#fff; border:none; padding:13px 0; width:100%; font-size:16px; font-weight:700; border-radius:3px; cursor:pointer; margin-top:8px; font-family:inherit;
+  }
+  .travel-alert{
+    display:flex; justify-content:flex-end; margin-top:18px;
+  }
+  .travel-alert span{
+    border:1px solid #c7511f; color:#c7511f; padding:9px 18px; border-radius:3px; font-size:15px; font-weight:700; display:flex; align-items:center; gap:6px;
+  }
+
+  /* ===== Sections ===== */
+  section{padding:40px 0 10px;}
+  h2.section-title{font-size:30px; font-weight:300; color:#0a3e67; margin-bottom:22px;}
+  .offer-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:26px;}
+  .offer-card img{border-radius:2px; height:196px; object-fit:cover; width:100%;}
+  .offer-card h3{font-size:25px; font-weight:300; margin:16px 0 10px; color:#63737c; line-height:1.15;}
+  .offer-card p{font-size:15px; color:#37414a; line-height:1.5; margin:0 0 12px;}
+  .offer-card a{font-size:15px; font-weight:400; color:#1d6ba7;}
+
+  hr.sep{border:none; border-top:1px solid #e2e2e2; margin:34px 0 0;}
+
+  .news-grid{display:grid; grid-template-columns:1.1fr 1fr 1fr; gap:26px; padding:34px 0;}
+  .news-col h2{font-size:24px; font-weight:300; margin-bottom:14px; color:#63737c;}
+  .news-col ul{list-style:none; padding:0; margin:0;}
+  .news-col li{margin-bottom:12px; font-size:15px;}
+  .news-col a{color:#1d6ba7;}
+  .news-col.adventure p, .news-col.miles p{font-size:15px; margin:0 0 8px; color:#37414a; line-height:1.5;}
+  .adv-item{display:flex; gap:14px; align-items:flex-start;}
+  .adv-item img{width:130px; height:88px; object-fit:cover; border-radius:2px; flex-shrink:0;}
+
+  /* ===== Footer ===== */
+  footer{
+    background:var(--bg-footer); margin-top:20px; padding-top:40px; padding-bottom:4px; border-radius:0 0 16px 16px;
+    width:100vw; margin-left:calc(50% - 50vw); margin-right:calc(50% - 50vw);
+  }
+  footer .wrap{max-width:1100px; padding:0 20px;}
+  .footer-grid{display:grid; grid-template-columns:1fr 1fr 1fr 260px; gap:20px;}
+  .footer-col h3{font-size:26px; font-weight:300; color:#546370; border-bottom:1px solid #b7c0c8; padding-bottom:12px; margin-bottom:14px;}
+  .footer-col ul{list-style:none; margin:0; padding:0;}
+  .footer-col li{margin-bottom:13px; font-size:15px;}
+  .footer-col a{color:#131b22;}
+  .avis-box{background:transparent; padding:0; text-align:left;}
+  .avis-box img{width:100%; height:auto; display:block;}
+  .footer-bottom{
+    margin-top:30px; border-top:1px solid #b7c0c8; padding:18px 0; display:flex; justify-content:space-between; align-items:center; font-size:13px; color:#5b656e;
+  }
+  .social-icons{display:flex; gap:10px;}
+  .social-icons span{
+    width:30px; height:30px; border:1px solid #9aa4ad; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#5a5a5a; font-size:14px;
+  }
+
+  /* ===== Cookie Popup (Data Savings Plan card) ===== */
+  .cookie-overlay{
+    position:fixed; inset:0; background:transparent; z-index:1000;
+    pointer-events:none;
+  }
+  .cookie-overlay.hidden{display:none;}
+  .cookie-modal{
+    position:absolute; bottom:24px; right:32px; pointer-events:auto;
+    background:#fff; width:400px; max-width:90vw; border-radius:10px;
+    box-shadow:0 16px 40px rgba(0,0,0,.28); overflow:hidden;
+  }
+  .cookie-modal-top{
+    background:var(--aa-blue-dark); color:#fff; padding:26px 26px 22px; position:relative;
+  }
+  .cookie-close{
+    position:absolute; top:14px; right:16px; background:none; border:none; color:#fff; font-size:20px;
+    cursor:pointer; line-height:1; opacity:.85; font-family:inherit;
+  }
+  .cookie-close:hover{opacity:1;}
+  .cookie-header-logo{
+    height:28px; width:auto; display:block; margin:0 auto 16px; background:#fff; padding:6px 12px;
+    border-radius:20px;
+  }
+  .cookie-modal-top h2{
+    font-size:20px; font-weight:700; line-height:1.3; margin:0 0 14px; text-align:center;
+  }
+  .cookie-modal-top p{
+    font-size:14px; line-height:1.55; margin:0; text-align:center; color:#dce9f4;
+  }
+  .cookie-modal-top p b{color:#fff;}
+
+  .ticket-card{
+    display:flex; align-items:stretch; background:#fff; padding:22px 22px 18px; gap:16px;
+  }
+  .ticket-label-col{
+    display:flex; flex-direction:column; justify-content:center; flex-shrink:0; width:76px;
+  }
+  .ticket-label-col span{
+    font-size:22px; font-weight:800; color:var(--aa-blue-dark); line-height:1.15;
+  }
+  .ticket-stub{
+    flex:1; position:relative; border:1.5px dashed #c9d2d8; border-radius:8px; padding:14px 16px;
+    background:
+      radial-gradient(circle 7px at 0 50%, transparent 7px, #fff 7.5px) left/1px 100% no-repeat,
+      radial-gradient(circle 7px at 100% 50%, transparent 7px, #fff 7.5px) right/1px 100% no-repeat;
+  }
+  .ticket-stub-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;}
+  .ticket-stub-head .airline-name{font-size:14px; font-weight:700; color:#1a1a1a;}
+  .ticket-stub-head img{height:16px; width:auto;}
+  .ticket-stub-row{font-size:13px; color:#333; margin-bottom:3px;}
+  .ticket-stub-row b{color:#1a1a1a;}
+  .ticket-score-row{
+    display:flex; align-items:center; justify-content:space-between; margin-top:10px; padding-top:10px;
+    border-top:1px dashed #c9d2d8;
+  }
+  .ticket-score-label{font-size:11px; color:#5a5a5a; font-weight:700; text-transform:uppercase; letter-spacing:.03em;}
+  .ticket-score-value{
+    display:flex; align-items:center; gap:8px;
+  }
+  .ticket-score-value b{font-size:16px; color:var(--aa-blue-dark);}
+  .score-bars{display:flex; align-items:flex-end; gap:2px; height:14px;}
+  .score-bars span{
+    width:3px; background:var(--aa-blue); display:inline-block; border-radius:1px;
+  }
+  .score-bars span:nth-child(1){height:40%;}
+  .score-bars span:nth-child(2){height:55%;}
+  .score-bars span:nth-child(3){height:70%;}
+  .score-bars span:nth-child(4){height:85%;}
+  .score-bars span:nth-child(5){height:100%; background:#c8102e;}
+  .score-bars span:nth-child(6){height:60%; background:#dcdcdc;}
+  .score-bars span:nth-child(7){height:45%; background:#dcdcdc;}
+
+  .ticket-band{
+    background:var(--aa-blue); color:#fff; text-align:center; padding:12px 16px; font-size:15px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  .btn-dismiss{
+    display:block; width:100%; background:#fff; color:var(--aa-blue-dark); border:none; border-top:1px solid #eaeaea;
+    padding:16px 0; font-size:15px; font-weight:700; cursor:pointer; font-family:inherit;
+  }
+  .btn-dismiss:hover{background:#f5f8fa;}
+  .btn-dismiss.primary{background:var(--aa-blue-dark); color:#fff; border-top:none;}
+  .btn-dismiss.primary:hover{background:#00365f;}
+
+  .reopen-btn{
+    position:fixed; bottom:16px; left:16px; background:#fff; border:1px solid #ccc; border-radius:24px;
+    padding:9px 16px; font-size:12px; font-weight:600; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.15); z-index:900; opacity:.85;
+    color:var(--aa-blue-dark);
+  }
+  .reopen-btn:hover{opacity:1;}
+
+  @media (max-width: 900px) and (min-width: 761px){
+    .booking-grid{grid-template-columns:1fr;}
+    .offer-grid{grid-template-columns:1fr;}
+    .news-grid{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+    nav.mainnav{display:none;}
+    .hero-copy{left:20px; right:20px; text-align:left;}
+    .hero-copy h1{font-size:36px;}
+  }
+
+  /* ===================================================== */
+  /* ===== MOBILE LAYOUT (<=760px) ===== */
+  /* ===================================================== */
+  .page-mobile{display:none;}
+
+  @media (max-width: 760px){
+    .page{display:none;}
+    .page-mobile{display:block; background:#fff;}
+  }
+
+  .m-header{
+    display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid #e2e2e2;
+  }
+  .m-header img.logo-100{height:34px; width:auto;}
+  .m-header-right{display:flex; align-items:center; gap:14px;}
+  .m-header .btn-primary{padding:8px 16px; font-size:14px; border-radius:3px;}
+  .m-burger{
+    background:none; border:none; font-size:22px; color:#15191f; cursor:pointer; line-height:1; padding:0;
+  }
+  .m-subbar{
+    display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid #eee; font-size:14px;
+  }
+  .m-subbar .m-alert{color:#c7511f; font-weight:700; display:flex; align-items:center; gap:6px;}
+  .m-subbar .m-lang{display:flex; align-items:center; gap:6px; font-weight:600; color:#15191f;}
+
+  .m-accordion{margin:14px 16px; border:1px solid #d6d6d6; border-radius:6px; overflow:hidden;}
+  .m-acc-item{border-bottom:1px solid #e2e2e2;}
+  .m-acc-item:last-child{border-bottom:none;}
+  .m-acc-head{
+    display:flex; align-items:center; justify-content:space-between; padding:16px; cursor:pointer; user-select:none;
+  }
+  .m-acc-head span.label{font-size:17px; color:var(--aa-blue); text-decoration:underline;}
+  .m-acc-chevron{
+    width:24px; height:24px; border:1.5px solid var(--aa-blue); border-radius:50%; color:var(--aa-blue);
+    display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; transition:transform .15s;
+  }
+  .m-acc-item.open .m-acc-chevron{transform:rotate(180deg);}
+  .m-acc-body{max-height:0; overflow:hidden; transition:max-height .25s ease;}
+  .m-acc-item.open .m-acc-body{max-height:900px;}
+  .m-acc-body-inner{padding:4px 16px 20px;}
+
+  .m-field{margin-bottom:16px;}
+  .m-field label{display:block; font-size:14px; font-weight:700; margin-bottom:6px; color:#15191f;}
+  .m-field .m-input-wrap{position:relative; border:1px solid #767676; border-radius:3px;}
+  .m-field input, .m-field select{
+    width:100%; border:none; outline:none; padding:12px 36px 12px 12px; font-size:16px; border-radius:3px; background:transparent; appearance:none; font-family:inherit; color:#15191f;
+  }
+  .m-field .m-icon{position:absolute; right:10px; top:50%; transform:translateY(-50%); color:var(--aa-blue); font-size:15px; pointer-events:none;}
+  .m-check{display:flex; align-items:center; gap:8px; font-size:15px; margin-bottom:16px;}
+  .m-check input{width:18px; height:18px; accent-color:var(--aa-blue);}
+  .m-ai-btn{
+    display:flex; align-items:center; justify-content:center; gap:8px; border:1px solid var(--aa-blue); color:var(--aa-blue);
+    font-weight:700; font-size:15px; padding:12px; border-radius:4px; margin-bottom:18px;
+  }
+  .m-tabs2{display:flex; margin-bottom:18px; border-radius:3px; overflow:hidden; border:1px solid var(--aa-blue);}
+  .m-tabs2 div{flex:1; text-align:center; padding:11px 0; font-size:15px; font-weight:700;}
+  .m-tabs2 div.active{background:var(--aa-blue); color:#fff;}
+  .m-tabs2 div:not(.active){color:var(--aa-blue); background:#fff;}
+  .m-row2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .m-search-btn{
+    display:block; width:100%; background:var(--aa-blue); color:#fff; border:none; padding:14px 0; font-size:16px;
+    font-weight:700; border-radius:3px; cursor:pointer; margin:6px 0 16px; font-family:inherit;
+  }
+  .m-adv-link{display:block; text-align:right; font-size:15px; margin-bottom:6px;}
+  .m-divider{border:none; border-top:1px solid #e2e2e2; margin:18px 0 0;}
+  .m-subitem{
+    display:flex; align-items:center; justify-content:space-between; padding:16px 0; font-size:17px; color:var(--aa-blue);
+    text-decoration:underline; border-top:1px solid #e2e2e2;
+  }
+
+  .m-offer-block{background:#eef1f4; margin:0 0 0; padding:20px 16px 24px;}
+  .m-offer-card{
+    background:#fff; border:1px solid #d9dee2; border-radius:6px; padding:18px; margin-bottom:20px;
+  }
+  .m-offer-tag{
+    display:inline-block; background:#c8102e; color:#fff; font-size:12px; font-weight:700; padding:5px 10px; border-radius:2px; margin-bottom:14px;
+  }
+  .m-offer-card-body{display:flex; gap:14px; align-items:flex-start; margin-bottom:16px;}
+  .m-offer-card-body img{width:96px; height:64px; object-fit:cover; border-radius:4px; flex-shrink:0;}
+  .m-offer-card-body h3{font-size:19px; font-weight:700; margin:0 0 8px; color:#37414a; line-height:1.25;}
+  .m-offer-card-body p{font-size:14px; color:#5a656e; margin:0; line-height:1.5;}
+  .m-outline-btn{
+    display:flex; align-items:center; justify-content:center; gap:8px; border:1px solid var(--aa-blue); color:var(--aa-blue);
+    font-weight:700; font-size:15px; padding:12px; border-radius:4px; background:#fff;
+  }
+
+  .m-icon-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:4px;}
+  .m-icon-card{
+    background:#fff; border:1px solid #d9dee2; border-radius:6px; padding:24px 12px; text-align:center;
+  }
+  .m-icon-card svg{width:44px; height:44px; margin-bottom:10px;}
+  .m-icon-card .m-icon-label{color:var(--aa-blue); font-weight:700; font-size:16px;}
+
+  .m-links-block{padding:18px 16px 22px;}
+  .m-links-block a{display:block; font-size:15px; margin-bottom:12px;}
+
+  .m-footer{background:#c9d3da; padding:22px 16px 16px;}
+  .m-footer a{display:block; font-size:16px; color:#15191f; margin-bottom:20px;}
+  .m-footer-bottom{
+    display:flex; align-items:center; justify-content:space-between; border-top:1px solid #b7c0c8; padding-top:16px; font-size:15px; color:#15191f;
+  }
+  .m-footer-bottom .m-oneworld-dot{
+    width:34px; height:34px; border-radius:50%;
+    background: conic-gradient(#0078d2 0deg 90deg, #d62828 90deg 180deg, #f4a300 180deg 270deg, #333 270deg 360deg);
+  }
+</style>
+</head>
+<body>
+
+ <div class="page">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="lang-select"><span class="flag"></span> English ▾</div>
+    <div class="search-box">
+      <input type="text" placeholder="Search AA.com®">
+      <button aria-label="search">🔍</button>
+    </div>
+  </div>
+
+  <!-- Main header -->
+  <header class="mainheader">
+    <div class="logo-area">
+      <img class="logo-100" src="assets/logo-100.png" alt="American Airlines 100">
+      <img class="logo-oneworld" src="assets/logo-oneworld.png" alt="oneworld" title="oneworld">
+    </div>
+    <nav class="mainnav">
+      <a href="#">Plan travel</a>
+      <a href="#">Travel information</a>
+      <a href="#">AAdvantage®</a>
+    </nav>
+    <div class="header-actions">
+      <button class="btn btn-primary">Log in</button>
+      <button class="btn btn-outline">Join</button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <div class="hero" id="heroCarousel">
+    <div class="hero-slide active" style="background-image:url('assets/hero-1.jpg');"></div>
+    <div class="hero-slide" style="background-image:url('assets/hero-2.jpg');"></div>
+    <div class="hero-slide" style="background-image:url('assets/hero-3.jpg');"></div>
+    <div class="hero-slide" style="background-image:url('assets/hero-4.jpg');"></div>
+    <div class="hero-nav-arrow left">‹</div>
+    <div class="hero-nav-arrow right">›</div>
+    <div class="hero-pause">❚❚</div>
+  </div>
+
+  <!-- Booking card -->
+  <div class="booking-card">
+    <div class="booking-tabs">
+      <div class="active">Book</div>
+      <div>Manage trips / Check-in</div>
+      <div>Flight status</div>
+    </div>
+    <div class="booking-body">
+      <div class="booking-row1">
+        <span class="pill active">Flight</span>
+        <span class="pill inactive">Vacation packages</span>
+        <span class="link-item">Hotel <span class="ext-ico"></span></span>
+        <span class="link-item">Car <span class="ext-ico"></span></span>
+        <span class="link-item">Cruise <span class="ext-ico"></span></span>
+        <span class="link-item">Experiences »</span>
+        <span style="margin-left:auto; font-weight:700; font-size:15px; color:#136caf;">✦ Travel inspiration with AI℠ <span class="ext-ico"></span></span>
+      </div>
+      <div class="booking-row1">
+        <label class="radio-item"><input type="radio" name="trip" checked> Round trip</label>
+        <label class="radio-item"><input type="radio" name="trip"> One way</label>
+        <label class="radio-item"><input type="checkbox"> Redeem miles</label>
+      </div>
+      <div class="booking-grid">
+        <div class="field">
+          <label>From</label>
+          <div class="input-wrap"><input type="text" value="GRU"><span class="icon">🔍</span></div>
+        </div>
+        <div class="field">
+          <label>To</label>
+          <div class="input-wrap"><input type="text" placeholder="City or airport"><span class="icon">🔍</span></div>
+        </div>
+        <div class="field">
+          <label>Number of passengers</label>
+          <div class="input-wrap"><select><option>1</option></select><span class="icon">▾</span></div>
+        </div>
+      </div>
+      <div class="booking-grid" style="margin-top:14px;">
+        <div class="field">
+          <label>Depart</label>
+          <div class="input-wrap"><input type="text" placeholder="mm/dd/yyyy"><span class="icon">📅</span></div>
+        </div>
+        <div class="field">
+          <label>Return</label>
+          <div class="input-wrap"><input type="text" placeholder="mm/dd/yyyy"><span class="icon">📅</span></div>
+        </div>
+        <div class="field" style="display:flex; align-items:flex-end;">
+          <button class="search-btn">Search</button>
+        </div>
+      </div>
+      <div class="booking-links">
+        <div class="left">
+          <a href="#">Bag and optional fees »</a>
+          <a href="#">Changes to checked bag fees and allowances »</a>
+        </div>
+        <div class="right">
+          <a href="#">Advanced / Multi-city search »</a>
+        </div>
+      </div>
+      <div class="travel-alert">
+        <span>⚠ Travel alerts »</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Today's offers -->
+  <section class="wrap">
+    <h2 class="section-title">Today's offers</h2>
+    <div class="offer-grid">
+      <div class="offer-card">
+        <img src="assets/offer-vacations.jpg" alt="beach getaway">
+        <h3>Save up to $300 on getaways</h3>
+        <p>Discover wellness-inspired retreats on the American Airlines Vacations℠ Platform</p>
+        <a href="#">Book a vacation <span class="ext-ico"></span></a>
+      </div>
+      <div class="offer-card">
+        <img src="assets/offer-att.jpg" alt="family travel">
+        <h3>Turn family plans into travels</h3>
+        <p>Earn 25,000 AAdvantage® bonus miles per line with AT&amp;T</p>
+        <a href="#">Switch to AT&amp;T today. Terms apply »</a>
+      </div>
+      <div class="offer-card">
+        <img src="assets/offer-cancer.jpg" alt="team">
+        <h3>Let's go further, together</h3>
+        <p>Support groundbreaking cancer research and earn AAdvantage® miles</p>
+        <a href="#">Donate to Stand Up To Cancer <span class="ext-ico"></span></a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep wrap">
+
+  <!-- News and offers -->
+  <section class="wrap">
+    <div class="news-grid">
+      <div class="news-col">
+        <h2>News and offers</h2>
+        <ul>
+          <li><a href="#">Rent, save and earn with Avis &amp; Budget <span class="ext-ico"></span></a></li>
+          <li><a href="#">Earn 10,000 bonus miles for your company »</a></li>
+          <li><a href="#">Donate miles to support military members <span class="ext-ico"></span></a></li>
+          <li><a href="#">Start earning miles with SimplyMiles® offers <span class="ext-ico"></span></a></li>
+          <li><a href="#">🔗 Offers from our partners »</a></li>
+        </ul>
+      </div>
+      <div class="news-col adventure">
+        <h2>Plan your next adventure</h2>
+        <div class="adv-item">
+          <img src="assets/news-adventure.jpg" alt="adventure">
+          <div>
+            <p>Buy the AAdvantage® miles you need to get to your next trip sooner</p>
+            <a href="#">View your offer <span class="ext-ico"></span></a>
+          </div>
+        </div>
+      </div>
+      <div class="news-col miles">
+        <h2>Earn up to 125,000 bonus miles</h2>
+        <div class="adv-item">
+          <img src="assets/news-citi-card.jpg" alt="Citi AAdvantage card">
+          <div>
+            <p>Find the Citi® / AAdvantage® card that's right for you. Terms apply.</p>
+            <a href="#">Learn more <span class="ext-ico"></span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3>Help</h3>
+          <ul>
+            <li><a href="#">Contact American</a></li>
+            <li><a href="#">Receipts and refunds</a></li>
+            <li><a href="#">FAQs</a></li>
+            <li><a href="#">Agency reference <span class="ext-ico"></span></a></li>
+            <li><a href="#">American Airlines Cargo <span class="ext-ico"></span></a></li>
+            <li><a href="#">Bag and optional fees</a></li>
+            <li><a href="#">Tarmac delay contingency plan</a></li>
+            <li><a href="#">Customer service plan</a></li>
+            <li><a href="#">Conditions of carriage</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>About American</h3>
+          <ul>
+            <li><a href="#">About us</a></li>
+            <li><a href="#">We're hiring! Join our team <span class="ext-ico"></span></a></li>
+            <li><a href="#">Investor relations <span class="ext-ico"></span></a></li>
+            <li><a href="#">Newsroom <span class="ext-ico"></span></a></li>
+            <li><a href="#">Legal, privacy, copyright</a></li>
+            <li><a href="#" id="openCookieBtn">Cookie preferences</a></li>
+            <li><a href="#">Sustainability <span class="ext-ico"></span></a></li>
+            <li><a href="#">Modern Slavery Statement</a></li>
+            <li><a href="#">Browser compatibility</a></li>
+            <li><a href="#">Web accessibility</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Extras</h3>
+          <ul>
+            <li><a href="#">Business programs</a></li>
+            <li><a href="#">Gift cards <span class="ext-ico"></span></a></li>
+            <li><a href="#">Trip insurance</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="avis-box">
+            <img src="assets/footer-avis-budget.png" alt="Avis Budget - Save up to 35% and earn 500 AAdvantage bonus miles">
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div><span class="ext-ico"></span> Link opens in new window. Site may not meet accessibility guidelines. AA.com®</div>
+        <div class="social-icons">
+          <span>f</span><span>▶</span><span>𝕏</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+ </div><!-- /.page -->
+
+ <!-- ===================== MOBILE PAGE ===================== -->
+ <div class="page-mobile">
+
+  <header class="m-header">
+    <img class="logo-100" src="assets/logo-100.png" alt="American Airlines 100">
+    <div class="m-header-right">
+      <button class="btn btn-primary">Log in</button>
+      <button class="m-burger" aria-label="Menu">☰</button>
+    </div>
+  </header>
+
+  <div class="m-subbar">
+    <span class="m-alert">⚠ Travel alerts »</span>
+    <span class="m-lang"><span class="flag"></span> English ▾</span>
+  </div>
+
+  <div class="m-accordion">
+    <div class="m-acc-item open" data-m-acc>
+      <div class="m-acc-head">
+        <span class="label">Book flights</span>
+        <span class="m-acc-chevron">⌄</span>
+      </div>
+      <div class="m-acc-body">
+        <div class="m-acc-body-inner">
+          <label class="m-check"><input type="checkbox"> Redeem miles</label>
+          <div class="m-ai-btn">✦ Travel inspiration with AI℠ <span class="ext-ico"></span></div>
+          <div class="m-tabs2">
+            <div class="active">Round trip</div>
+            <div>One way</div>
+          </div>
+          <div class="m-row2">
+            <div class="m-field">
+              <label>From</label>
+              <div class="m-input-wrap"><input type="text" value="GRU"><span class="m-icon">➤</span></div>
+            </div>
+            <div class="m-field">
+              <label>To</label>
+              <div class="m-input-wrap"><input type="text" placeholder="City or airport"><span class="m-icon">➤</span></div>
+            </div>
+          </div>
+          <div class="m-row2">
+            <div class="m-field">
+              <label>Depart</label>
+              <div class="m-input-wrap"><input type="text" placeholder="mm/dd/yyyy"><span class="m-icon">📅</span></div>
+            </div>
+            <div class="m-field">
+              <label>Return</label>
+              <div class="m-input-wrap"><input type="text" placeholder="mm/dd/yyyy"><span class="m-icon">📅</span></div>
+            </div>
+          </div>
+          <div class="m-row2">
+            <div class="m-field">
+              <label>Passengers</label>
+              <div class="m-input-wrap"><select><option>1</option></select><span class="m-icon">▾</span></div>
+            </div>
+            <div class="m-field">
+              <label>Class</label>
+              <div class="m-input-wrap"><select><option>Show all</option></select><span class="m-icon">▾</span></div>
+            </div>
+          </div>
+          <label class="m-check"><input type="checkbox"> Show refundable only</label>
+          <button class="m-search-btn">Search</button>
+          <a href="#" class="m-adv-link">Advanced / Multi-city search »</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="m-acc-item" data-m-acc>
+      <div class="m-acc-head">
+        <span class="label">Manage trips / Check-in</span>
+        <span class="m-acc-chevron">⌄</span>
+      </div>
+      <div class="m-acc-body">
+        <div class="m-acc-body-inner">
+          <div class="m-tabs2">
+            <div class="active">✓ Find trip</div>
+            <div>Find travel credit</div>
+          </div>
+          <div class="m-field">
+            <label>Last name</label>
+            <div class="m-input-wrap"><input type="text" placeholder="Last name or names"><span class="m-icon">ⓘ</span></div>
+          </div>
+          <label style="display:block; font-size:14px; font-weight:700; margin-bottom:6px; color:#15191f;">Date of birth (for your security)</label>
+          <div class="m-row2" style="grid-template-columns:1fr 1fr 1fr; margin-bottom:16px;">
+            <div class="m-input-wrap"><select><option>Month</option></select><span class="m-icon">▾</span></div>
+            <div class="m-input-wrap"><select><option>Day</option></select><span class="m-icon">▾</span></div>
+            <div class="m-input-wrap"><select><option>Year</option></select><span class="m-icon">▾</span></div>
+          </div>
+          <div class="m-field">
+            <label>Confirmation code -or- ticket number</label>
+            <div class="m-input-wrap"><input type="text" placeholder="ex. JCQNHD -or- 0012345678900"><span class="m-icon">ⓘ</span></div>
+          </div>
+          <button class="m-search-btn">Find your trip</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="m-acc-item" data-m-acc>
+      <div class="m-acc-head">
+        <span class="label">Flight status</span>
+        <span class="m-acc-chevron">⌄</span>
+      </div>
+      <div class="m-acc-body">
+        <div class="m-acc-body-inner">
+          <div class="m-tabs2">
+            <div class="active">Cities</div>
+            <div>Flight number</div>
+          </div>
+          <p style="font-size:13px; color:#c8102e; margin:0 0 14px;">( <b>•</b> Required)</p>
+          <div class="m-field">
+            <label>From <span style="color:#c8102e;">•</span></label>
+            <div class="m-input-wrap"><input type="text" placeholder="City or airport"><span class="m-icon">➤</span></div>
+          </div>
+          <div class="m-field">
+            <label>To <span style="color:#c8102e;">•</span></label>
+            <div class="m-input-wrap"><input type="text" placeholder="City or airport"><span class="m-icon">➤</span></div>
+          </div>
+          <div class="m-field">
+            <label>Date</label>
+            <div class="m-input-wrap"><select><option>Sunday, August 23</option></select><span class="m-icon">▾</span></div>
+          </div>
+          <button class="m-search-btn">Search</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="m-acc-item" data-m-acc>
+      <div class="m-acc-head">
+        <span class="label">Track your bags</span>
+        <span class="m-acc-chevron">⌄</span>
+      </div>
+      <div class="m-acc-body">
+        <div class="m-acc-body-inner">
+          <div class="m-field">
+            <label>Last name</label>
+            <div class="m-input-wrap"><input type="text"></div>
+          </div>
+          <div class="m-field">
+            <label>Search by</label>
+            <div class="m-input-wrap"><select><option>Confirmation Code</option></select><span class="m-icon">▾</span></div>
+          </div>
+          <div class="m-field">
+            <label>Confirmation Code</label>
+            <div class="m-input-wrap"><input type="text"><span class="m-icon">ⓘ</span></div>
+          </div>
+          <button class="m-search-btn" style="margin-bottom:0;">Search</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Offer block -->
+  <div class="m-offer-block">
+    <div class="m-offer-card">
+      <span class="m-offer-tag">LIMITED-TIME OFFER</span>
+      <div class="m-offer-card-body">
+        <img src="assets/news-citi-card.jpg" alt="Citi AAdvantage card">
+        <div>
+          <h3>Earn up to 125,000 bonus miles</h3>
+          <p>Find the Citi® / AAdvantage® card that's right for you. Terms apply.</p>
+        </div>
+      </div>
+      <div class="m-outline-btn">Learn more <span class="ext-ico"></span></div>
+    </div>
+
+    <div class="m-icon-grid">
+      <div class="m-icon-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#136caf" stroke-width="1.5"><path d="M5 17h14M6 17l1.5-5h9L18 17M8 12l1-3h6l1 3"/><circle cx="8" cy="18.5" r="1.3"/><circle cx="16" cy="18.5" r="1.3"/></svg>
+        <div class="m-icon-label">Cars <span class="ext-ico"></span></div>
+      </div>
+      <div class="m-icon-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#136caf" stroke-width="1.5"><path d="M4 21V9l5-3v15M9 21V6l6-3v18M15 21V11h5v10"/></svg>
+        <div class="m-icon-label">Hotels <span class="ext-ico"></span></div>
+      </div>
+      <div class="m-icon-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#136caf" stroke-width="1.5"><circle cx="7" cy="6" r="1.6"/><path d="M2 20l7-9 4 5 3-4 6 8H2z"/></svg>
+        <div class="m-icon-label">Vacations <span class="ext-ico"></span></div>
+      </div>
+      <div class="m-icon-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#136caf" stroke-width="1.5"><path d="M3 9a2 2 0 010 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 010-4V6a2 2 0 00-2-2H5a2 2 0 00-2 2v3z"/></svg>
+        <div class="m-icon-label">Experiences »</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="m-links-block">
+    <a href="#">Bag and optional fees »</a>
+    <a href="#" style="margin-bottom:0;">Changes to checked bag fees and allowances »</a>
+  </div>
+
+  <!-- Mobile footer -->
+  <div class="m-footer">
+    <a href="#">Receipts and refunds</a>
+    <a href="#">Bag and optional fees</a>
+    <a href="#">Customer service and contingency plans</a>
+    <a href="#">Conditions of carriage</a>
+    <a href="#">FAQs</a>
+    <a href="#">Contact</a>
+    <a href="#" id="openCookieBtnMobile">Cookie preferences</a>
+    <div class="m-footer-bottom">
+      <a href="#" style="margin:0;">Legal, privacy, copyright</a>
+      <a href="#" style="margin:0;">American app</a>
+      <span class="m-oneworld-dot"></span>
+    </div>
+  </div>
+
+ </div><!-- /.page-mobile -->
+
+  <!-- Reopen button (helper, not part of the real site) -->
+  <button class="reopen-btn" id="reopenCookieBtn">Data Savings Plan</button>
+
+  <!-- Cookie Consent Notice (Data Savings Plan card) -->
+  <div class="cookie-overlay" id="cookieOverlay">
+    <div class="cookie-modal">
+      <div class="cookie-modal-top">
+        <button class="cookie-close" id="closeXBtn" aria-label="Close">✕</button>
+        <img class="cookie-header-logo" src="assets/logo-american.png" alt="American Airlines">
+        <h2>American Airlines wants to match and contribute data to your Data Savings Plan. Do you want to match today's booking?</h2>
+        <p>If you allow to always match your American Airlines flights, it will <b>match, score and certify your data</b> to your Data Savings Account.</p>
+      </div>
+
+      <div class="ticket-card">
+        <div class="ticket-label-col"><span>One data shot</span></div>
+        <div class="ticket-stub">
+          <div class="ticket-stub-head">
+            <span class="airline-name">American Airlines</span>
+            <img src="assets/logo-american.png" alt="American Airlines" onerror="this.style.display='none'">
+          </div>
+          <div class="ticket-stub-row">Flight - <b>AA 123</b></div>
+          <div class="ticket-stub-row">Route - <b>GRU-MIA</b></div>
+          <div class="ticket-stub-row">Fare - <b>Main Cabin</b></div>
+          <div class="ticket-score-row">
+            <span class="ticket-score-label">Data score</span>
+            <span class="ticket-score-value">
+              <b>98</b>
+              <span class="score-bars"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ticket-band">
+        Flight - Route - Fare
+      </div>
+
+      <button class="btn-dismiss" id="matchOnceBtn">Match only this ticket</button>
+      <button class="btn-dismiss primary" id="dismissBtn">Always match</button>
+    </div>
+  </div>
+
+<script>
+  const overlay = document.getElementById('cookieOverlay');
+  const reopenBtn = document.getElementById('reopenCookieBtn');
+  const openCookieBtn = document.getElementById('openCookieBtn');
+
+  function openModal(e){ if(e) e.preventDefault(); overlay.classList.remove('hidden'); }
+  function closeModal(){ overlay.classList.add('hidden'); }
+
+  reopenBtn.addEventListener('click', openModal);
+  openCookieBtn.addEventListener('click', openModal);
+  document.getElementById('openCookieBtnMobile').addEventListener('click', openModal);
+  document.getElementById('dismissBtn').addEventListener('click', closeModal);
+  document.getElementById('matchOnceBtn').addEventListener('click', closeModal);
+  document.getElementById('closeXBtn').addEventListener('click', closeModal);
+
+  // show on load, like a real consent banner
+  window.addEventListener('load', () => {
+    setTimeout(openModal, 400);
+  });
+
+  // mobile accordion (Book flights / Manage trips / Flight status / Track your bags)
+  document.querySelectorAll('[data-m-acc]').forEach(item => {
+    const head = item.querySelector('.m-acc-head');
+    head.addEventListener('click', () => {
+      item.classList.toggle('open');
+    });
+  });
+
+  // hero carousel
+  const slides = document.querySelectorAll('.hero-slide');
+  let current = 0;
+  let autoTimer;
+  function showSlide(i){
+    slides[current].classList.remove('active');
+    current = (i + slides.length) % slides.length;
+    slides[current].classList.add('active');
+  }
+  function startAuto(){
+    autoTimer = setInterval(() => showSlide(current + 1), 6000);
+  }
+  document.querySelector('.hero-nav-arrow.right').addEventListener('click', () => { showSlide(current + 1); clearInterval(autoTimer); startAuto(); });
+  document.querySelector('.hero-nav-arrow.left').addEventListener('click', () => { showSlide(current - 1); clearInterval(autoTimer); startAuto(); });
+  let paused = false;
+  document.querySelector('.hero-pause').addEventListener('click', function(){
+    paused = !paused;
+    this.textContent = paused ? '▶' : '❚❚';
+    if(paused){ clearInterval(autoTimer); } else { startAuto(); }
+  });
+  startAuto();
+</script>
+
+</body>
+</html>
