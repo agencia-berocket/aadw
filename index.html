@@ -185,14 +185,13 @@
 
   /* ===== Cookie Popup (Data Savings Plan card) ===== */
   .cookie-overlay{
-    position:fixed; inset:0; background:transparent; z-index:1000;
-    pointer-events:none;
+    position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:1000;
+    display:flex; align-items:center; justify-content:center;
   }
   .cookie-overlay.hidden{display:none;}
   .cookie-modal{
-    position:absolute; bottom:24px; right:32px; pointer-events:auto;
-    background:#fff; width:400px; max-width:90vw; border-radius:10px;
-    box-shadow:0 16px 40px rgba(0,0,0,.28); overflow:hidden;
+    background:#fff; width:400px; max-width:90vw; max-height:90vh; border-radius:10px;
+    box-shadow:0 16px 40px rgba(0,0,0,.28); overflow:hidden; overflow-y:auto;
   }
   .cookie-modal-top{
     background:var(--aa-blue-dark); color:#fff; padding:26px 26px 22px; position:relative;
@@ -274,6 +273,14 @@
     color:var(--aa-blue-dark);
   }
   .reopen-btn:hover{opacity:1;}
+
+  @media (max-width: 480px){
+    .cookie-overlay{padding:14px;}
+    .cookie-modal{
+      width:100%; max-width:none;
+    }
+    .reopen-btn{bottom:10px; left:10px;}
+  }
 
   @media (max-width: 900px) and (min-width: 761px){
     .booking-grid{grid-template-columns:1fr;}
@@ -387,8 +394,7 @@
     display:flex; align-items:center; justify-content:space-between; border-top:1px solid #b7c0c8; padding-top:16px; font-size:15px; color:#15191f;
   }
   .m-footer-bottom .m-oneworld-dot{
-    width:34px; height:34px; border-radius:50%;
-    background: conic-gradient(#0078d2 0deg 90deg, #d62828 90deg 180deg, #f4a300 180deg 270deg, #333 270deg 360deg);
+    width:34px; height:34px; display:block;
   }
 </style>
 </head>
@@ -821,7 +827,7 @@
     <div class="m-footer-bottom">
       <a href="#" style="margin:0;">Legal, privacy, copyright</a>
       <a href="#" style="margin:0;">American app</a>
-      <span class="m-oneworld-dot"></span>
+      <img class="m-oneworld-dot" src="assets/logo-oneworld.png" alt="oneworld">
     </div>
   </div>
 
